@@ -5,6 +5,7 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:peter)
+    @inactive_user = users(:malory)
   end
 
   test "profile display" do
@@ -18,5 +19,10 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     @user.microposts.paginate(page: 1).each do |micropost|
       assert_match micropost.content, response.body
     end
+  end
+
+  test "should not show inactive users" do
+    get user_path(@inactive_user)
+    assert_response :redirect
   end
 end
