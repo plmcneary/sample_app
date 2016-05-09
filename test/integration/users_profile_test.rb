@@ -25,4 +25,10 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     get user_path(@inactive_user)
     assert_response :redirect
   end
+
+  test "should display stats" do
+    get user_path(@user)
+    assert_match @user.followers.count.to_s, response.body
+    assert_match @user.following.count.to_s, response.body
+  end
 end
